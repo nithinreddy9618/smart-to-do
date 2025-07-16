@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart To-Do App</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="auth-bg">
+    <div class="auth-card">
+      <h1 class="auth-title">WELCOME !</h1>
+      <p class="auth-subtitle">Log In to continue</p>
+      <form id="login-form" class="auth-form">
+        <h2 class="auth-form-title">Log in</h2>
+        <div class="input-group">
+          <input type="text" id="login-email" placeholder="user name" required />
+        </div>
+        <div class="input-group">
+          <input type="password" id="login-password" placeholder="password" required />
+        </div>
+        <div class="auth-links">
+          <a href="#" class="forgot-link">Forgot your <b>password?</b></a>
+        </div>
+        <button type="submit" class="auth-btn">Log in</button>
+        <p class="auth-switch">Don't have any account? <a href="#" id="show-register">Sign Up</a></p>
+        <div class="auth-error" id="login-error"></div>
+      </form>
+      <form id="register-form" class="auth-form" style="display:none;">
+        <h2 class="auth-form-title">Register</h2>
+        <div class="input-group">
+          <input type="text" id="register-email" placeholder="user name" required />
+        </div>
+        <div class="input-group">
+          <input type="password" id="register-password" placeholder="password" required />
+        </div>
+        <button type="submit" class="auth-btn">Register</button>
+        <p class="auth-switch">Already have an account? <a href="#" id="show-login">Login</a></p>
+        <div class="auth-error" id="register-error"></div>
+      </form>
+    </div>
+  </div>
+  <div id="main-app" style="display:none;">
+    <div class="container">
+      <header>
+        <h1>Smart To-Do App</h1>
+        <button id="logout-btn">Logout</button>
+      </header>
+      <form id="task-form">
+        <input type="text" id="task-input" placeholder="Add a new task..." required />
+        <button type="submit" id="add-btn">+</button>
+      </form>
+      <ul id="task-list">
+        <!-- Tasks will appear here -->
+      </ul>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
