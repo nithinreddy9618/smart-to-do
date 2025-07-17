@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const email = document.getElementById('login-email').value.trim();
     const password = document.getElementById('login-password').value;
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const email = document.getElementById('register-email').value.trim();
     const password = document.getElementById('register-password').value;
     try {
-      const res = await fetch('/api/auth/register', {
+      const res = await fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadTasks() {
     taskList.innerHTML = '<li>Loading...</li>';
     try {
-      const res = await fetch('/api/tasks', {
+      const res = await fetch('http://localhost:5000/api/tasks', {
         headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
       });
       if (!res.ok) throw new Error('Failed to load tasks');
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const text = taskInput.value.trim();
     if (!text) return;
     try {
-      const res = await fetch('/api/tasks', {
+      const res = await fetch('http://localhost:5000/api/tasks', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -130,21 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         body: JSON.stringify({ text })
       });
-      fetch('/api/data')
-  .then(res => {
-    if (!res.ok) throw new Error("HTTP error " + res.status);
-    return res.text(); // safer than res.json() directly
-  })
-  .then(text => {
-    if (text) {
-      const data = JSON.parse(text);  // only if text is not empty
-      console.log(data);
-    } else {
-      console.log("Empty response");
-    }
-  })
-  .catch(err => console.error("Fetch error:", err));
-
       let data;
       try {
         data = await res.json();
@@ -160,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   async function deleteTask(id) {
-    await fetch(`/api/tasks/${id}`, {
+    await fetch(`http://localhost:5000/api/tasks/${id}`, {
       method: 'DELETE',
       headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
     });
