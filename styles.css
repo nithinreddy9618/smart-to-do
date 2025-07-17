@@ -8,20 +8,25 @@ body, html {
 
 .auth-bg {
   min-height: 100vh;
-  background: linear-gradient(135deg, #1e085a 0%, #6d1b7b 100%);
+  background: 
+    linear-gradient(135deg, rgba(30,8,90,0.7) 0%, rgba(109,27,123,0.7) 100%),
+    url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXgcsVGdm9Ypea-YCkDCPl3lVwcDflN-m-OA&s") no-repeat center center fixed;
+  background-size: cover;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .auth-card {
-  background: #fff;
+  background: #ffffff12;
   border-radius: 20px;
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
   padding: 40px 32px 32px 32px;
-  width: 350px;
-  max-width: 90vw;
+  width: 400px;
+  max-width: 95vw;
   text-align: center;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .auth-title {
@@ -40,7 +45,7 @@ body, html {
 }
 
 .auth-form-title {
-  color: #6d1b7b;
+  color: #ffffff;
   margin-bottom: 18px;
   font-size: 1.3rem;
   font-weight: 600;
@@ -91,7 +96,7 @@ body, html {
 }
 
 .forgot-link {
-  color: #6d1b7b;
+  color: white;
   font-size: 0.95rem;
   text-decoration: none;
 }
@@ -103,13 +108,13 @@ body, html {
 .auth-switch {
   margin-top: 10px;
   font-size: 0.98rem;
-  color: #888;
+  color: white;
 }
 
 .auth-switch a {
-  color: #6d1b7b;
+  color: #fff;
   font-weight: 600;
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 .auth-switch a:hover {
@@ -133,7 +138,7 @@ body, html {
 }
 
 .task-item {
-  background: #f7f7fa;
+  background: #f7f7fa94;
   border-radius: 10px;
   margin-bottom: 12px;
   padding: 14px 18px;
@@ -195,4 +200,162 @@ body, html {
 #logout-btn:hover {
   background: linear-gradient(135deg, #6a82fb 0%, #fc5c7d 100%);
   transform: scale(1.06);
+} 
+
+#main-app .auth-card {
+  padding: 32px 24px 24px 24px;
+  min-width: 320px;
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+#main-app header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+#main-app .auth-title {
+  color: #6d1b7b;
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: 1px;
+}
+
+#main-app #logout-btn {
+  margin-left: 12px;
+  margin-top: 0;
+  margin-bottom: 0;
+  height: 36px;
+  padding: 0 16px;
+  font-size: 1rem;
+}
+
+#main-app #task-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+#main-app #task-input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f7f7f7;
+  transition: border 0.2s;
+}
+#main-app #task-input:focus {
+  border: 1.5px solid #6d1b7b;
+  outline: none;
+  background: #fff;
+}
+
+#main-app #add-btn.auth-btn {
+  width: 48px;
+  padding: 0;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#main-app #task-list {
+  padding: 0;
+  margin: 0;
+  min-height: 120px;
+}
+
+#main-app .task-item {
+  background: #f7f7fa;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  padding: 14px 18px;
+  box-shadow: 0 2px 8px rgba(106,130,251,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.08rem;
+  color: #2d3a4b;
+}
+
+#main-app .action-btn {
+  background: none;
+  border: none;
+  color: #fc5c7d;
+  font-size: 1.25rem;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 6px 10px;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+  display: flex;
+  align-items: center;
+}
+#main-app .action-btn:hover {
+  background: #ffe3ec;
+  color: #6d1b7b;
+  transform: scale(1.1);
+}
+
+#main-app #task-list li {
+  list-style: none;
+}
+#main-app #task-list li:first-child:only-child {
+  color: #b0b8c1;
+  text-align: center;
+  font-style: italic;
+} 
+
+#main-app.auth-bg {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .auth-card {
+    width: 98vw;
+    padding: 24px 18px 8px 8px;
+    min-width: unset;
+    font-size: 0.98rem;
+  }
+  #main-app .auth-card {
+    padding: 18px 4px 12px 4px;
+    min-width: unset;
+    min-height: 220px;
+  }
+  #main-app .auth-title, .auth-title {
+    font-size: 1.3rem;
+  }
+  #main-app #logout-btn {
+    font-size: 0.95rem;
+    padding: 0 10px;
+    height: 32px;
+  }
+  #main-app #task-input {
+    font-size: 0.98rem;
+    padding: 10px 8px;
+  }
+  #main-app #add-btn.auth-btn {
+    font-size: 1.1rem;
+    width: 36px;
+  }
+}
+
+@media (max-width: 400px) {
+  .auth-card {
+    width: 100vw;
+    padding: 10px 2px 8px 2px;
+    border-radius: 0;
+  }
+  #main-app .auth-card {
+    padding: 8px 2px 6px 2px;
+    border-radius: 0;
+  }
 } 

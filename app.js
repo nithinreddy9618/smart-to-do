@@ -39,8 +39,10 @@ document.addEventListener('DOMContentLoaded', () => {
       authBg.style.display = 'none';
       mainApp.style.display = 'block';
       loadTasks();
+      alert('Login successful!');
     } catch (err) {
       document.getElementById('login-error').textContent = err.message;
+      alert('Login failed: ' + err.message);
     }
   });
 
@@ -61,8 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
       authBg.style.display = 'none';
       mainApp.style.display = 'block';
       loadTasks();
+      alert('Registration successful!');
     } catch (err) {
       document.getElementById('register-error').textContent = err.message;
+      alert('Registration failed: ' + err.message);
     }
   });
 
@@ -73,6 +77,40 @@ document.addEventListener('DOMContentLoaded', () => {
     authBg.style.display = 'flex';
     loginForm.style.display = 'block';
     registerForm.style.display = 'none';
+  });
+
+  // Forgot Password
+  document.querySelector('.forgot-link').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('forgot-modal').style.display = 'block';
+    document.querySelector('.auth-bg').style.display = 'flex';
+    document.getElementById('login-form').style.display = 'none';
+    document.getElementById('register-form').style.display = 'none';
+  });
+
+  document.getElementById('close-forgot').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('forgot-modal').style.display = 'none';
+    document.getElementById('login-form').style.display = 'block';
+  });
+
+  document.getElementById('forgot-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const email = document.getElementById('forgot-email').value.trim();
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to send reset link');
+      alert('If this email is registered, a reset link has been sent.');
+      document.getElementById('forgot-modal').style.display = 'none';
+      document.getElementById('login-form').style.display = 'block';
+    } catch (err) {
+      document.getElementById('forgot-error').textContent = err.message;
+    }
   });
 
   // To-Do App Logic
@@ -139,15 +177,22 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!res.ok) throw new Error(data.error || 'Failed to add task');
       taskInput.value = '';
       loadTasks();
+      alert('Task added successfully!');
     } catch (err) {
-      alert('Error adding task.');
+      alert('Error adding task: ' + err.message);
     }
   });
 
   async function deleteTask(id) {
-    await fetch(`http://localhost:5000/api/tasks/${id}`, {
-      method: 'DELETE',
-      headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
-    });
+    try {
+      await fetch(`http://localhost:5000/api/tasks/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+      });
+      loadTasks();
+      alert('Task deleted successfully!');
+    } catch (err) {
+      alert('Error deleting task: ' + err.message);
+    }
   }
 }); 

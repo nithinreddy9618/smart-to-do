@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
+const crypto = require('crypto');
+const nodemailer = require('nodemailer'); // If you want to send real emails
 
 module.exports = function (req, res, next) {
   const authHeader = req.headers['authorization'];
