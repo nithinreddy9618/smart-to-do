@@ -22,29 +22,41 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Login
-  loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('login-email').value.trim();
-    const password = document.getElementById('login-password').value;
-    try {
-      const res = await fetch('http://localhost:5000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Login failed');
-      localStorage.setItem('token', data.token);
-      authBg.style.display = 'none';
-      mainApp.style.display = 'block';
-      loadTasks();
-      alert('Login successful!');
-    } catch (err) {
-      document.getElementById('login-error').textContent = err.message;
-      alert('Login failed: ' + err.message);
-    }
-  });
+
+  const authContainer = document.getElementById('auth-container');
+ 
+  const loginError = document.getElementById('login-error');
+
+  if (loginForm) {
+    loginForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      // Use 'email' to match backend
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      try {
+        const response = await fetch('http://localhost:5000/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Login successful
+          authContainer.style.display = 'none';
+          mainApp.style.display = 'flex';
+          loginError.textContent = '';
+        } else {
+          // Login failed
+          loginError.textContent = data.error || data.message || 'Invalid email or password';
+        }
+      } catch (err) {
+        loginError.textContent = 'Server error. Please try again later.';
+      }
+    });
+  }
 
   // Register
   registerForm.addEventListener('submit', async (e) => {
