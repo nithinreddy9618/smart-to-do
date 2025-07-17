@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const password = document.getElementById('login-password').value;
 
       try {
-        const response = await fetch('http://localhost:5000/api/auth/login', {
+        const response = await fetch('/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const email = document.getElementById('register-email').value.trim();
     const password = document.getElementById('register-password').value;
     try {
-      const res = await fetch('http://localhost:5000/api/auth/register', {
+      const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     const email = document.getElementById('forgot-email').value.trim();
     try {
-      const res = await fetch('http://localhost:5000/api/auth/forgot-password', {
+      const res = await fetch('/api/auth/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadTasks() {
     taskList.innerHTML = '<li>Loading...</li>';
     try {
-      const res = await fetch('http://localhost:5000/api/tasks', {
+      const res = await fetch('/api/tasks', {
         headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
       });
       if (!res.ok) throw new Error('Failed to load tasks');
@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dueDate = document.getElementById('due-date-input').value;
     if (!text) return;
     try {
-      const res = await fetch('http://localhost:5000/api/tasks', {
+      const res = await fetch('/api/tasks', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function deleteTask(id) {
     try {
-      await fetch(`http://localhost:5000/api/tasks/${id}`, {
+      await fetch(`/api/tasks/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
       });

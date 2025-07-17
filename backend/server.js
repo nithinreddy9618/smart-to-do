@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -9,6 +10,8 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+// Serve static files from public folder
+app.use(express.static(path.join(__dirname, '../public')));
 
 // MongoDB connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/smart-todo';
@@ -27,8 +30,9 @@ const Task = require('./models/Task');
 const User = require('./models/User');
 
 // Routes
-app.get('/', (req, res) => {
-  res.send('Smart To-Do API is running');
+// Catch-all route to serve index.html for SPA support
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
 // Task routes
