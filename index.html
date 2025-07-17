@@ -7,7 +7,14 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="auth-bg">
+  <div id="landing-page" class="auth-bg" style="min-height:100vh; display:flex; align-items:center; justify-content:center;">
+    <div class="auth-card">
+      <h1 class="auth-title" style="margin-bottom: 12px;">Welcome!</h1>
+      <h2 class="auth-form-title" style="margin-bottom: 24px;">Smart To-Do </h2>
+      <button id="go-to-login" class="auth-btn" style="width: 100%;">Go to Login</button>
+    </div>
+  </div>
+  <div id="auth-container" class="auth-bg" style="display:none;">
     <div class="auth-card">
       <h1 class="auth-title">WELCOME!</h1>
       <p class="auth-subtitle">Log In to continue</p>
@@ -69,6 +76,7 @@
       </header>
       <form id="task-form" style="display: flex; gap: 8px; margin-bottom: 18px;">
         <input type="text" id="task-input" placeholder="Add a new task..." required style="flex: 1;" />
+        <input type="datetime-local" id="due-date-input" style="flex: 1;" placeholder="Due date & time" />
         <button type="submit" id="add-btn" class="auth-btn" style="width: 48px; padding: 0;">+</button>
       </form>
       <ul id="task-list" style="padding: 0; margin: 0;">
@@ -76,7 +84,24 @@
       </ul>
     </div>
   </div>
+  <footer style="width:100%;text-align:center;padding:16px 0 8px 0;color:#fff;opacity:0.85;position:fixed;left:0;bottom:0;z-index:100;font-size:1rem;background:linear-gradient(90deg,rgba(30,8,90,0.7),rgba(109,27,123,0.7));">
+    Created by Nithin &mdash; &copy; 2024 Smart To-Do. All rights reserved.
+  </footer>
   <script src="app.js"></script>
   <script src="script.js"></script>
+  <script>
+    // Landing page logic
+    document.addEventListener('DOMContentLoaded', function() {
+      const landing = document.getElementById('landing-page');
+      const authContainer = document.getElementById('auth-container');
+      const goToLogin = document.getElementById('go-to-login');
+      if (goToLogin) {
+        goToLogin.addEventListener('click', function() {
+          landing.style.display = 'none';
+          authContainer.style.display = 'flex';
+        });
+      }
+    });
+  </script>
 </body>
 </html>

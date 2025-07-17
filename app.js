@@ -140,11 +140,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     tasks.forEach(task => {
       const li = document.createElement('li');
-      li.textContent = task.text;
       li.className = 'task-item';
+      li.textContent = task.text;
+      // Add due date/time if present
+      if (task.dueDate) {
+        const due = new Date(task.dueDate);
+        const formatted = due.toLocaleString();
+        const dueSpan = document.createElement('span');
+        dueSpan.style.fontSize = '0.95em';
+        dueSpan.style.color = '#6d1b7b';
+        dueSpan.style.marginLeft = '10px';
+        dueSpan.textContent = `(Due: ${formatted})`;
+        li.appendChild(dueSpan);
+      }
       // Delete button
       const delBtn = document.createElement('button');
-      delBtn.textContent = '🗑️';
+      delBtn.textContent = '\uD83D\uDDD1\uFE0F';
       delBtn.className = 'action-btn';
       delBtn.onclick = async () => {
         await deleteTask(task._id);
@@ -158,6 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
   taskForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const text = taskInput.value.trim();
+    const dueDate = document.getElementById('due-date-input').value;
     if (!text) return;
     try {
       const res = await fetch('http://localhost:5000/api/tasks', {
@@ -166,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         },
-        body: JSON.stringify({ text })
+        body: JSON.stringify({ text, dueDate })
       });
       let data;
       try {
@@ -176,6 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (!res.ok) throw new Error(data.error || 'Failed to add task');
       taskInput.value = '';
+      document.getElementById('due-date-input').value = '';
       loadTasks();
       alert('Task added successfully!');
     } catch (err) {

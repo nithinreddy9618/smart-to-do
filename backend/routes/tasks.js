@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Task = require('../models/Task');
 const auth = require('../middleware/auth');
+const nodemailer = require('nodemailer');
+const User = require('../models/User');
 
 // Get all tasks for the logged-in user
 router.get('/', auth, async (req, res) => {
@@ -14,15 +16,51 @@ router.get('/', auth, async (req, res) => {
 });
 
 // Add a new task for the logged-in user
-router.post('/', auth, async (req, res) => {
-  console.log('Received task:', req.body); // Debug log
+router.post('/',auth, async (req, res) => {
   try {
     const { text, dueDate } = req.body;
-    const newTask = new Task({ text, user: req.user.userId, dueDate });
-    const savedTask = await newTask.save();
-    res.status(201).json(savedTask);
+    const userId = req.user.userId; // assuming you use auth middleware
+
+    const task = new Task({
+      text,
+      user: userId,
+      dueDate: dueDate ? new Date(dueDate) : undefined
+    });
+    await task.save();
+
+    // Check if the task is overdue or due soon (e.g., within 1 hour)
+    if (dueDate) {
+      const due = new Date(dueDate);
+      const now = new Date();
+      const soon = new Date(now.getTime() + 60 * 60 * 1000); // 1 hour from now
+
+      if (due <= soon) {
+        // Get user email
+        const user = await User.findById(userId);
+        if (user && user.email) {
+          // Send email alert
+          const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: 'bnkr9618@gmail.com',
+              pass: 'xeay byvv eghp ihnl'
+            }
+          });
+
+          const mailOptions = {
+            to: user.email,
+            subject: 'Task Due Soon!',
+            text: `Your task "${text}" is due at ${due.toLocaleString()}. Please complete it soon!`
+          };
+
+          await transporter.sendMail(mailOptions);
+        }
+      }
+    }
+
+    res.status(201).json(task);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(500).json({ error: err.message });
   }
 });
 

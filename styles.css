@@ -239,23 +239,14 @@ body, html {
   display: flex;
   gap: 8px;
   margin-bottom: 18px;
+  flex-wrap: wrap;
 }
-
-#main-app #task-input {
-  flex: 1;
-  padding: 12px 14px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 1rem;
-  background: #f7f7f7;
-  transition: border 0.2s;
+#main-app #task-input,
+#main-app #due-date-input {
+  flex: 1 1 140px;
+  min-width: 0;
+  box-sizing: border-box;
 }
-#main-app #task-input:focus {
-  border: 1.5px solid #6d1b7b;
-  outline: none;
-  background: #fff;
-}
-
 #main-app #add-btn.auth-btn {
   width: 48px;
   padding: 0;
@@ -263,6 +254,7 @@ body, html {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 48px;
 }
 
 #main-app #task-list {
@@ -345,6 +337,17 @@ body, html {
   #main-app #add-btn.auth-btn {
     font-size: 1.1rem;
     width: 36px;
+  }
+  #main-app #task-form {
+    flex-direction: column;
+    gap: 8px;
+  }
+  #main-app #task-input,
+  #main-app #due-date-input,
+  #main-app #add-btn.auth-btn {
+    width: 100%;
+    min-width: 0;
+    flex: 1 1 100%;
   }
 }
 
