@@ -125,6 +125,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // --- Password Reset Link Logic ---
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get('token');
+  if (token) {
+    // Hide all other forms
+    document.getElementById('landing-page').style.display = 'none';
+    document.getElementById('auth-container').style.display = 'flex';
+    document.getElementById('login-form').style.display = 'none';
+    document.getElementById('register-form').style.display = 'none';
+    document.getElementById('reset-form').style.display = 'block';
+
+    // Optionally, store the token for use when submitting the reset form
+    document.getElementById('reset-form').dataset.token = token;
+  }
+
   // To-Do App Logic
   const taskForm = document.getElementById('task-form');
   const taskInput = document.getElementById('task-input');
@@ -220,4 +235,25 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('Error deleting task: ' + err.message);
     }
   }
+
+  document.getElementById('reset-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const newPassword = document.getElementById('new-password').value;
+    const token = e.target.dataset.token; // get the token from the form's dataset
+
+    try {
+      const res = await fetch('/api/auth/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, newPassword })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to reset password');
+      alert('Password reset successful! You can now log in.');
+      // Optionally redirect to login
+      window.location.href = '/';
+    } catch (err) {
+      document.getElementById('reset-error').textContent = err.message;
+    }
+  });
 }); 
