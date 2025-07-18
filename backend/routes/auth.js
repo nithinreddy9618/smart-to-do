@@ -66,7 +66,7 @@ router.post('/forgot-password', async (req, res) => {
     await user.save();
 
     // Log the reset link (or send email in production)
-    const resetLink = `http://localhost:5500/?token=${token}`;
+    const resetLink = `https://smart-to-do-ybtx.onrender.com/?token=${token}`;
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -84,6 +84,34 @@ router.post('/forgot-password', async (req, res) => {
     await transporter.sendMail(mailOptions);
 
     res.json({ message: 'If this email is registered, a reset link has been sent.' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/auth/reset-password
+router.post('/reset-password', async (req, res) => {
+  const { token, newPassword } = req.body;
+  if (!token || !newPassword) {
+    return res.status(400).json({ error: 'Token and new password are required.' });
+  }
+  try {
+    const user = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() }
+    });
+    if (!user) {
+      return res.status(400).json({ error: 'Invalid or expired token.' });
+    }
+    // Validate new password
+    if (newPassword.length < 8 || !/[A-Za-z]/.test(newPassword) || !/\d/.test(newPassword)) {
+      return res.status(400).json({ error: 'Password must be at least 8 characters and include a letter and a number.' });
+    }
+    user.password = await require('bcryptjs').hash(newPassword, 10);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+    res.json({ message: 'Password has been reset successfully.' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
