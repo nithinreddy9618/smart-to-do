@@ -8,8 +8,11 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
+console.log("Registering middleware: cors()");
 app.use(cors());
+console.log("Registering middleware: express.json()");
 app.use(express.json());
+console.log("Registering static files: " + path.join(__dirname, '../public'));
 // Serve static files from public folder
 app.use(express.static(path.join(__dirname, '../public')));
 
@@ -31,15 +34,18 @@ const User = require('./models/User');
 
 // Routes
 // Task routes
+console.log("Registering route: /api/tasks");
 const taskRoutes = require('./routes/tasks');
 app.use('/api/tasks', taskRoutes);
     
 // Auth routes
+console.log("Registering route: /api/auth");
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
 
 // Catch-all route to serve index.html for SPA support (must be last)
-app.get('/*', (req, res) => {
+console.log("Registering catch-all route: /*rest");
+app.get('/*rest', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 

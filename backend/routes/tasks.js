@@ -5,6 +5,7 @@ const auth = require('../middleware/auth');
 const nodemailer = require('nodemailer');
 const User = require('../models/User');
 
+console.log("Registering router.get: /");
 // Get all tasks for the logged-in user
 router.get('/', auth, async (req, res) => {
   try {
@@ -15,6 +16,7 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+console.log("Registering router.post: /");
 // Add a new task for the logged-in user
 router.post('/',auth, async (req, res) => {
   try {
@@ -64,6 +66,7 @@ router.post('/',auth, async (req, res) => {
   }
 });
 
+console.log("Registering router.put: /:id");
 // Update a task (edit text or completed) for the logged-in user
 router.put('/:id', auth, async (req, res) => {
   try {
@@ -80,6 +83,7 @@ router.put('/:id', auth, async (req, res) => {
   }
 });
 
+console.log("Registering router.delete: /:id");
 // Delete a task for the logged-in user
 router.delete('/:id', auth, async (req, res) => {
   try {

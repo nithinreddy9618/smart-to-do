@@ -1,12 +1,13 @@
+const nodemailer = require('nodemailer'); // Make sure this is at the top of your file
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const nodemailer = require('nodemailer'); // Make sure this is at the top of your file
 
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
 
+console.log("Registering router.post: /login");
 // POST /api/auth/login
 router.post('/login', async (req, res) => {
   try {
@@ -23,6 +24,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
+console.log("Registering router.post: /register");
 // POST /api/auth/register
 router.post('/register', async (req, res) => {
   try {
@@ -44,6 +46,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
+console.log("Registering router.post: /forgot-password");
 // POST /api/auth/forgot-password
 router.post('/forgot-password', async (req, res) => {
   const { email } = req.body;
