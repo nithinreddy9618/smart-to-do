@@ -36,7 +36,7 @@
       <form id="register-form" class="auth-form" style="display:none;">
         <h2 class="auth-form-title">Register</h2>
         <div class="input-group">
-          <input type="email" id="register-email" placeholder="Enter your email" required />
+          <input type="email" id="register-email" placeholder="Enter your email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" />
         </div>
         <div class="input-group">
           <input type="password" id="register-password" placeholder="password" required />
@@ -99,6 +99,16 @@
           landing.style.display = 'none';
           authContainer.style.display = 'flex';
         });
+      }
+    });
+
+    document.getElementById('register-form').addEventListener('submit', function(e) {
+      const email = document.getElementById('register-email').value;
+      // Basic regex for email validation
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailPattern.test(email)) {
+        e.preventDefault();
+        document.getElementById('register-error').textContent = "Please enter a valid email address.";
       }
     });
   </script>
