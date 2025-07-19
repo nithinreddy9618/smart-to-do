@@ -129,14 +129,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const urlParams = new URLSearchParams(window.location.search);
   const token = urlParams.get('token');
   if (token) {
-    // Hide all other forms
     document.getElementById('landing-page').style.display = 'none';
     document.getElementById('auth-container').style.display = 'flex';
     document.getElementById('login-form').style.display = 'none';
     document.getElementById('register-form').style.display = 'none';
     document.getElementById('reset-form').style.display = 'block';
-
-    // Optionally, store the token for use when submitting the reset form
     document.getElementById('reset-form').dataset.token = token;
   }
 
@@ -172,7 +169,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // Add due date/time if present
       if (task.dueDate) {
         const due = new Date(task.dueDate);
-        const formatted = due.toLocaleString();
+        // Always display in IST
+        const formatted = due.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
         const dueSpan = document.createElement('span');
         dueSpan.style.fontSize = '0.95em';
         dueSpan.style.color = '#6d1b7b';
@@ -196,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
   taskForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const text = taskInput.value.trim();
-    const dueDate = document.getElementById('due-date-input').value;
+    const dueDate = document.getElementById('due-date-input').value || undefined;
     if (!text) return;
     try {
       const res = await fetch('/api/tasks', {
@@ -256,4 +254,16 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('reset-error').textContent = err.message;
     }
   });
+
+  function showCurrentIST() {
+    const now = new Date();
+    const istTime = now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+    document.getElementById('current-ist').textContent = `Current IST time: ${istTime}`;
+  }
+
+  // Call once on page load
+  showCurrentIST();
+
+  // Optionally, update every second
+  setInterval(showCurrentIST, 1000);
 }); 

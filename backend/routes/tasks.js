@@ -21,12 +21,12 @@ console.log("Registering router.post: /");
 router.post('/',auth, async (req, res) => {
   try {
     const { text, dueDate } = req.body;
-    const userId = req.user.userId; // assuming you use auth middleware
+    const userId = req.user.userId;
 
     const task = new Task({
       text,
       user: userId,
-      dueDate: dueDate ? new Date(dueDate) : undefined
+      dueDate: dueDate ? new Date(dueDate) : undefined // This will interpret as local time
     });
     await task.save();
 
