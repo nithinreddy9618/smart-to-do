@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (response.ok) {
           // Login successful
+          localStorage.setItem('token', data.token); // Save token for authenticated requests
           authContainer.style.display = 'none';
           mainApp.style.display = 'flex';
           loginError.textContent = '';
@@ -194,7 +195,9 @@ document.addEventListener('DOMContentLoaded', () => {
   taskForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const text = taskInput.value.trim();
-    const dueDate = document.getElementById('due-date-input').value || undefined;
+    const dueDateInput = document.getElementById('due-date-input').value;
+    // Always send as UTC ISO string
+    const dueDate = dueDateInput ? new Date(dueDateInput).toISOString() : undefined;
     if (!text) return;
     try {
       const res = await fetch('/api/tasks', {

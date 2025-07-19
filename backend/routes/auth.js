@@ -71,7 +71,7 @@ router.post('/forgot-password', async (req, res) => {
       service: 'gmail',
       auth: {
         user: 'bnkr9618@gmail.com',        // <-- Replace with your Gmail address
-        pass: 'xeay byvv eghp ihnl'           // <-- Replace with your Gmail App Password
+        pass: 'nxdy ijlo zelv fxha'           // <-- Replace with your Gmail App Password
       }
     });
 

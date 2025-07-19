@@ -18,19 +18,19 @@ router.get('/', auth, async (req, res) => {
 
 console.log("Registering router.post: /");
 // Add a new task for the logged-in user
-router.post('/',auth, async (req, res) => {
+router.post('/', auth, async (req, res) => {
   try {
     const { text, dueDate } = req.body;
-    const userId = req.user.userId;
+    const userId = req.user.userId; // assuming you use auth middleware
 
     const task = new Task({
       text,
       user: userId,
-      dueDate: dueDate ? new Date(dueDate) : undefined // This will interpret as local time
+      dueDate: dueDate ? new Date(dueDate) : undefined
     });
     await task.save();
 
-    // Check if the task is overdue or due soon (e.g., within 1 hour)
+    // Email alert if the task is due within the next hour
     if (dueDate) {
       const due = new Date(dueDate);
       const now = new Date();
@@ -45,17 +45,22 @@ router.post('/',auth, async (req, res) => {
             service: 'gmail',
             auth: {
               user: 'bnkr9618@gmail.com',
-              pass: 'xeay byvv eghp ihnl'
+              pass: 'nxdy ijlo zelv fxha'
             }
           });
 
           const mailOptions = {
             to: user.email,
             subject: 'Task Due Soon!',
-            text: `Your task "${text}" is due at ${due.toLocaleString()}. Please complete it soon!`
+            text: `Your task "${text}" is due at ${due.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}. Please complete it soon!`
           };
 
-          await transporter.sendMail(mailOptions);
+          try {
+            await transporter.sendMail(mailOptions);
+            console.log('Email alert sent to', user.email);
+          } catch (emailErr) {
+            console.error('Failed to send email alert:', emailErr);
+          }
         }
       }
     }
