@@ -30,38 +30,38 @@ router.post('/', auth, async (req, res) => {
     });
     await task.save();
 
-    // Email alert if the task is due within the next hour
+    // Schedule email alert at due date
     if (dueDate) {
       const due = new Date(dueDate);
       const now = new Date();
-      const soon = new Date(now.getTime() + 60 * 60 * 1000); // 1 hour from now
+      const delay = due.getTime() - now.getTime();
 
-      if (due <= soon) {
-        // Get user email
-        const user = await User.findById(userId);
-        if (user && user.email) {
-          // Send email alert
-          const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-              user: 'bnkr9618@gmail.com',
-              pass: 'nxdy ijlo zelv fxha'
+      if (delay > 0) {
+        setTimeout(async () => {
+          const user = await User.findById(userId);
+          if (user && user.email) {
+            const transporter = nodemailer.createTransport({
+              service: 'gmail',
+              auth: {
+                user: 'bnkr9618@gmail.com',
+                pass: 'nxdy ijlo zelv fxha'
+              }
+            });
+
+            const mailOptions = {
+              to: user.email,
+              subject: 'Task Due Now!',
+              text: `Your task "${text}" is due now!`
+            };
+
+            try {
+              await transporter.sendMail(mailOptions);
+              console.log('Due date email sent to', user.email);
+            } catch (emailErr) {
+              console.error('Failed to send due date email:', emailErr);
             }
-          });
-
-          const mailOptions = {
-            to: user.email,
-            subject: 'Task Due Soon!',
-            text: `Your task "${text}" is due at ${due.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}. Please complete it soon!`
-          };
-
-          try {
-            await transporter.sendMail(mailOptions);
-            console.log('Email alert sent to', user.email);
-          } catch (emailErr) {
-            console.error('Failed to send email alert:', emailErr);
           }
-        }
+        }, delay);
       }
     }
 
