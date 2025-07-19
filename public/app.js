@@ -10,13 +10,15 @@ document.addEventListener('DOMContentLoaded', () => {
   if (showRegister && loginForm && registerForm) {
     showRegister.addEventListener('click', function(e) {
       e.preventDefault();
-      showOnlyForm('register-form');
+      loginForm.style.display = 'none';
+      registerForm.style.display = 'block';
     });
   }
   if (showLogin && loginForm && registerForm) {
     showLogin.addEventListener('click', function(e) {
       e.preventDefault();
-      showOnlyForm('login-form');
+      registerForm.style.display = 'none';
+      loginForm.style.display = 'block';
     });
   }
 
@@ -93,13 +95,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // Forgot Password
   document.querySelector('.forgot-link').addEventListener('click', function(e) {
     e.preventDefault();
-    showOnlyForm('forgot-modal');
+    document.getElementById('forgot-modal').style.display = 'block';
     document.querySelector('.auth-bg').style.display = 'flex';
+    document.getElementById('login-form').style.display = 'none';
+    document.getElementById('register-form').style.display = 'none';
   });
 
   document.getElementById('close-forgot').addEventListener('click', function(e) {
     e.preventDefault();
-    showOnlyForm('login-form');
+    document.getElementById('forgot-modal').style.display = 'none';
+    document.getElementById('login-form').style.display = 'block';
   });
 
   document.getElementById('forgot-form').addEventListener('submit', async function(e) {
@@ -127,7 +132,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (token) {
     document.getElementById('landing-page').style.display = 'none';
     document.getElementById('auth-container').style.display = 'flex';
-    showOnlyForm('reset-form');
+    document.getElementById('login-form').style.display = 'none';
+    document.getElementById('register-form').style.display = 'none';
+    document.getElementById('reset-form').style.display = 'block';
     document.getElementById('reset-form').dataset.token = token;
   }
 
